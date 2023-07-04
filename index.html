@@ -39,7 +39,7 @@
         };
         //load model:
         $("document").ready( async function(){
-            model = await tf.loadGraphModel('http://127.0.0.1:5500/models/model.json');
+            model = await tf.loadGraphModel('https://github.com/vonam007/MachineLearning-on-web/tree/main/models/model.json');
             console.log(model);
             
             $('#output').empty();
