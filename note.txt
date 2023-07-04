@@ -1,0 +1,3 @@
+convert h5 to JSON
+use:
+tensorflowjs_wizard
