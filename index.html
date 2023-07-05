@@ -39,7 +39,7 @@
         };
         //load model:
         $("document").ready( async function(){
-            model = await tf.loadGraphModel('https://github.com/vonam007/MachineLearning-on-web/tree/main/models/model.json');
+            model = await tf.loadGraphModel('https://nhandang.netlify.app/.netlify/functions/getJson');
             console.log(model);
             
             $('#output').empty();
