@@ -39,7 +39,7 @@
         };
         //load model:
         $("document").ready( async function(){
-            model = await tf.loadGraphModel('https://nhandang123.netlify.app/.netlify/functions/getJson');
+            model = await tf.loadGraphModel('https://nhandang123.netlify.app/functions/getJson');
             console.log(model);
             
             $('#output').empty();
