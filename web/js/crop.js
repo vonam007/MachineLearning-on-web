@@ -65,35 +65,55 @@ var croppie = null;
 document.getElementById("fileinput").addEventListener("change", function (e) {
   let file = this.files[0];
   let reader = new FileReader();
-  reader.onload = function (event) {
+  reader.onload = function () {
     let dataURL = reader.result;
     $("#img").attr("src", dataURL);
-    var croppieContainer = document.getElementById("img");
-    // var resultContainer = document.getElementById("result");
-    // Clear previous Croppie instance
-    if (croppie !== null) {
-      croppie.destroy();
-      //   resultContainer.innerHTML = "";
-    }
-    var containerWidth = croppieContainer.offsetWidth;
-    // var viewportSize = { width: containerWidth, height: containerWidth };
-    var viewportSize = { width: "50%", height: "auto" };
-    var boundarySize = { width: 100, height: 100 };
+    img.onload = function () {
+      // alert(img.width + "x" + img.height);
+      if (img.width > screen.width) {
+        img.width = img.width / 4;
+        img.height = img.height / 4;
+      }
+      var croppieContainer = document.getElementById("img");
+      var viewportSize = { width: screen.width, height: 50 };
+      var boundarySize = { width: screen.width, height: img.height };
 
-    // Initialize Croppie instance
-    croppie = new Croppie(croppieContainer, {
-      viewport: viewportSize,
-      boundary: boundarySize,
-    });
-
-    // Bind image to Croppie
-    croppie.bind({
-      url: event.target.result,
-      orientation: 1, // Set image orientation (optional)
-    });
+      if (croppie !== null) {
+        croppie.destroy();
+      }
+      // Initialize Croppie instance
+      croppie = new Croppie(croppieContainer, {
+        viewport: viewportSize,
+        boundary: boundarySize,
+        enableZoom: false,
+      });
+    };
   };
-  //   let file = $("#fileinput").prop("files")[0];
+  // let file = $("#fileinput").prop("files")[0];
   reader.readAsDataURL(file);
+});
+
+document.getElementById("predictbtn").addEventListener("click", function () {
+  if (croppie !== null) {
+    croppie.result().then(function (result) {
+      // Display cropped image
+      var imgElement = document.createElement("img");
+      imgElement.src = result;
+      imgElement.id = "new_img";
+
+      var resultContainer = document.getElementById("new_img");
+      if (resultContainer) {
+        resultContainer.innerHTML = ""; // Clear the container
+        resultContainer.appendChild(imgElement);
+      } else {
+        // Create a new container if it doesn't exist
+        var newContainer = document.createElement("div");
+        newContainer.id = "new_img";
+        newContainer.appendChild(imgElement);
+        document.body.appendChild(newContainer);
+      }
+    });
+  }
 });
 
 const btn = document.querySelector(".movedown_btn");
