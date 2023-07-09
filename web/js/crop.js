@@ -7,10 +7,10 @@ const FLOWER_CLASSES = {
 var model;
 //load model:
 $("document").ready(async function () {
-  const response = await fetch("https://nhandang123.netlify.app/.netlify/functions/getJson");
-  const jsonContent = await response.json();
+  // const response = await fetch("https://nhandang123.netlify.app/.netlify/functions/getJson");
+  // const jsonContent = await response.json();
   model = await tf.loadGraphModel(
-    "./.netlify/functions/models/model.json"
+    "https://nhandang123.netlify.app/functions/models/model.json"
   );
   console.log(model);
 
