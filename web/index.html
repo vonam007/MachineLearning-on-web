@@ -1,113 +1,48 @@
 <!-- create html page -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <!-- the icon of tab is a svg -->
 
-
-    <link rel="icon" href="resource\icon.svg">
+    <link rel="icon" href="resource\icon.svg" />
     <title>HandWriting Recognization</title>
     <!-- include css -->
-    <link rel="stylesheet" href="css/style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"
+    />
     <!-- include js -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <h1>WELCOME</h1>
+      <h1>WELCOME</h1>
     </div>
-    <div class="movedown_btn_container"><button class="movedown_btn"><i class='bx bx-down-arrow-alt'></i></button></div>
+    <div class="movedown_btn_container">
+      <button class="movedown_btn"><i class="bx bx-down-arrow-alt"></i></button>
+    </div>
     <div class="input">
-        <div class="btn_container"><button class="uploadbtn" id="uploadbtn">Upload</button></div>
-        <div><input type="file" name="inputFile" id="fileinput"></div>
+      <div class="btn_container">
+        <button class="uploadbtn" id="uploadbtn">Upload</button>
+      </div>
+      <div><input type="file" name="inputFile" id="fileinput" /></div>
     </div>
     <div class="result">
-        <img src="resource\imgHolder.jpg" alt="image" id="img">
-        <div><p class="text">Result</p></div>
-        <div><p id="output"></p></div>
+      <img src="resource\imgHolder.jpg" alt="image" id="img" />
+      <div><p class="text">Result</p></div>
+      <div><p id="output"></p></div>
     </div>
 
-    <!-- <script src="js/index.js" type="module"></script> -->
-    <script>
-        const FLOWER_CLASSES = {
-            0: 'setosa',
-            1: 'versicolour',
-            2: 'virginica'
-        };
-        //load model:
-        $("document").ready( async function(){
-            model = await tf.loadGraphModel('https://nhandang123.netlify.app/functions/getJson');
-            console.log(model);
-            
-            $('#output').empty();
-            //predict:
-            imEL = document.getElementById('img');
-                imEL.onload = function(){
-                    $('#output').empty();
-                    predict();
-                }
-
-        });
-
-        //predict function:
-        async function predict(){
-            // transfor to tensor
-            let images = document.getElementById('img');
-            let img = tf.browser.fromPixels(images)
-                .resizeNearestNeighbor([224,224])
-                .toFloat()
-                .reverse(2)
-                .div(255.0)
-                .expandDims();
-            //predict:
-            let predictions = await model.predict(img).data();
-            console.log(predictions);
-            //show result:
-            let top5 = Array.from(predictions)
-                .map(function(p,i){
-                    return {
-                        probability: p,
-                        className: FLOWER_CLASSES[i]
-                    };
-                }).sort(function(a,b){
-                    return b.probability - a.probability;
-                }).slice(0,1);
-            $('#output').empty();
-            top5.forEach(function(p){
-            $('#output').append(`<p>${p.className}: ${p.probability.toFixed(6)}</p>`);
-            });
-        }
-        //upload image:
-        $('#uploadbtn').click(function(){
-            $('#fileinput').trigger('click');
-        });
-
-        $('#fileinput').change(async function(){
-            //let file = this.files[0];
-            let reader = new FileReader();
-            reader.onload = function(){
-                let dataURL = reader.result;
-                $('#img').attr('src', dataURL);
-            }
-            let file = $('#fileinput').prop('files')[0];
-            reader.readAsDataURL(file);
-        });
-
-        const btn = document.querySelector('.movedown_btn');
-        btn.addEventListener('click', function() {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-            duration: 2000
-        });
-        });
-    </script>
-    
-</body>
-<footer>
-
-</footer>
+    <script src="functions/crop.js" type="module"></script>
+  </body>
+  <footer></footer>
 </html>
