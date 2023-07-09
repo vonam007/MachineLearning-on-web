@@ -3,18 +3,20 @@ const FLOWER_CLASSES = {
   1: "versicolour",
   2: "virginica",
 };
+
+var model;
 //load model:
 $("document").ready(async function () {
-  const response = await fetch("https://nhandang123.netlify.app/netlify/functions/getJson");
+  const response = await fetch("https://nhandang123.netlify.app/.netlify/functions/getJson");
   const jsonContent = await response.json();
   model = await tf.loadGraphModel(
-    jsonContent
+    "./.netlify/functions/models/model.json"
   );
   console.log(model);
 
   $("#output").empty();
   //predict:
-  imEL = document.getElementById("img");
+  let imEL = document.getElementById("img");
   imEL.onload = function () {
     $("#output").empty();
     predict();
